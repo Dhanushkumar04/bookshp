@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshop automation</title>
+    <style>
+        .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form {
+    width: 300px; 
+    border: 3px solid red;
+    padding: 100px;
+    background-color: powderblue;
+}
+
+.div {
+    margin-bottom: 15px;
+    padding-left: 50px;
+}
+
+label {
+    width: 120px;
+    text-align: right;
+    margin-right: 15px;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 180px; 
+}
+
+.container form button {
+    margin-left: 100px; 
+    border-radius: 5px;
+}
+button:hover{
+    background-color: blue;
+    color: white;
+}
+button:visited{
+    background-color: red;
+}
+    </style>
+</head>
+<body>
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    <div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="div">
+            <label for="username">Username:</label><br>
+            <input type="text" name="username"><br><br>
+        </div>
+        <div class="div">
+            <label for="email">Email:</label><br>
+            <input type="email" name="email"><br><br>
+        </div>
+        <div class="div">
+            <label for="password">Password:</label><br>
+            <input type="password" name="password"><br><br>
+        </div>
+        <div class="div">
+            <label for="cpassword">Confirm Password:</label>
+            <input type="password" name="cpassword"><br><br>
+        </div>
+        <button type="submit" name="submit">Sign up</button>
+    </form>
+</div>
+</body>
+</html>
