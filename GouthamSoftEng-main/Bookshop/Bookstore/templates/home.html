@@ -1,192 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookshop automation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        ul{
-            list-style: none;
-            display: flex;
-            justify-content: space-evenly;
-            background-color: aqua;
-            padding: 30px;
-            margin: 0;
-        }
-        li:hover{
-            color:red;
-            cursor: pointer;
-        
-}
-        button{
-            padding: 10px;
-            border-radius: 5px;
-        }
-        button:hover{
-            background-color: blue;
-            color: white;
-        }
-        li{
-            font-size: larger;
-            padding: 5PX;
-        }
-        a{
-            text-decoration: none;
-        }
-        a:hover{
-            color: red;
-        }
-        .foot {
-            background-color: aqua;
-            padding: 20px 0;
-            color: #333; /* Text color */
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 100px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-section {
-            padding: 20px;
-        }
-        
-        .footer-section h2 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            margin-top: 20px;
-        }
-        h2{
-            padding-bottom: 15px;
-            font-size: xx-large;
-        }
-        .product-list {
-            display: flex;
-            flex-wrap: wrap; 
-            justify-content: space-between; 
-            list-style: none; 
-            padding: 0;
-        }
- 
-        .product-item {
-            flex: 1; 
-            max-width: 30%; 
-            margin: 10px; 
-            border: 1px solid #ccc; 
-            padding: 10px;
-            text-align: center;
-        }
- 
-        .buy-now-button {
-            display: block;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    
-    <ul>
-        <h2><i class="fa fa-book" style="font-size:36px"></i>BookLand</h2>
-        <li>
-            <i class="fa fa-home"></i>Home
-        </li>
-        <li>
-            about
-        </li>
-        <li>
-            <i class="fa fa-group"></i>contact
-        </li>
-        <li>
-            <i class="fa fa-cog"></i>services
-        </li>
-        {% if request.user.is_authenticated %}
-        <li>
-            <a href="{% url 'view_cart' %}"> Cart-({{count}})</a>
-        </li>
-        {% endif %}
-        {% if user.is_authenticated %}
-        <li class="b"> Welcome,{{user.username}}</li>
-        <a href="{% url 'logout' %}">logout</a>
-        {% comment %} <li><form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Log Out</button>
-          </form></li> {% endcomment %}
-        {% else %}
-        <li><a href="{% url 'signup' %}" onclick="notraverse()">Signup</a></li>
-        <li><a href="{% url 'login' %}" onclick="notraverse()">Login</a></li>
-        
-        {% endif %}
-    </ul>
-    <br><br><br>
-    {% if request.user.is_authenticated %}
-    <h1>Product Catalog</h1>
-     
-    <ul class="product-list">
-        {% for product in products %}
-            <li class="product-item">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200" height="150">
-                <h2>{{ product.name }}</h2>
-                <p>{{ product.description }}</p>
-                <p>Price: ${{ product.price }}</p>
-                <a href="#" class="buy-now-button">View Description</a>
-                <a class="buy-now-button" href="{% url 'add_to_cart' product.id %}">Add</a>
- 
-            </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <footer class="foot">
-        <div class="footer-content">
-            <div class="footer-section about">
-                <h2>About Us</h2>
-                <p>Lorem ipsum dolor sit amet.
-                </p>
-            </div>
-            <div class="footer-section contact">
-                <h2>Contact Us</h2>
-                <p>Phone number: 0487469</p>
-                <p>Email: info@example.com</p>
-            </div>
-            <div class="footer-section follow">
-                <h2>Follow Us</h2>
-                <p>Youtube: Bookstore_official</p>
-                <p>Instagram: Bookstore_off</p>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-30">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h1 class="text-center mb-4">Welcome to Our Bookstore</h1>
+                    <div class="container p-4 shadow-sm mb-5 mt-5" id="search">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search for a product...">
+                    </div>
+                    <div class="row" id="productList">
+                        {% for product in products %}
+                        <div class="col-md-6 mb-4 product-card">
+                            <a href="{% url 'product_detail' product.id %}" class="card-link">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h2 class="card-title">{{ product.name }}</h2>
+                                        <p class="card-text">{{ product.description }}</p>
+                                        <p class="card-text">Price: Rs.{{ product.price }}</p>
+                                        <p class="card-text">Available: {{ product.quantity }}</p>
+                                </a><br>
+                                        {% if user.is_authenticated %}
+                                        <form method="post" action="{% url 'add_to_cart' product.id %}">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="count">Quantity:</label>
+                                                <input type="number" class="form-control" id="count" name="count" min="1" max="{{ product.quantity }}" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                        </form>
+                                        {% else %}
+                                        <p><a href="{% url 'login' %}" class="btn btn-secondary">Login</a> to add to cart</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                           
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2024 Bookshop Automation. All Rights Reserved.</p>
-        </div>
-    </footer>
-    {% comment %} <script type="text/javascript">
-        function notraverse()
-         {
-             window.history.forward()
-         }
-        notraverse();
-        window.onload = noBack;
-        window.onpageshow = function(evt) { if (evt.persisted) notraverse() }
-        window.onunload = function() { void (0) }
-    </script> {% endcomment %}
-</body>
-</html>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const productCards = document.querySelectorAll('.product-card');
+
+        productCards.forEach(card => {
+            const productName = card.querySelector('.card-title').textContent.toLowerCase();
+            const productDescription = card.querySelector('.card-text').textContent.toLowerCase();
+
+            if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

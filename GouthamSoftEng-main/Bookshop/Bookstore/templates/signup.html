@@ -1,78 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookshop automation</title>
-    <style>
-        .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+{% extends 'base.html' %}
 
-form {
-    width: 300px; 
-    border: 3px solid red;
-    padding: 100px;
-    background-color: powderblue;
-}
-
-.div {
-    margin-bottom: 15px;
-    padding-left: 50px;
-}
-
-label {
-    width: 120px;
-    text-align: right;
-    margin-right: 15px;
-}
-
-input[type="email"],
-input[type="password"] {
-    width: 180px; 
-}
-
-.container form button {
-    margin-left: 100px; 
-    border-radius: 5px;
-}
-button:hover{
-    background-color: blue;
-    color: white;
-}
-button:visited{
-    background-color: red;
-}
-    </style>
-</head>
-<body>
-    {% for message in messages %}
-        <p>{{message}}</p>
-    {% endfor %}
-    <div class="container">
+{% block content %}
+<style>
+    input:invalid + .invalid-feedback {
+        display: block;
+    }
+    
+    .invalid-feedback {
+        display: none;
+        color: red;
+        margin-top: 5px;
+    }
+</style>    
+<div class="container">
     <form method="POST">
         {% csrf_token %}
-        <div class="div">
-            <label for="username">Username:</label><br>
-            <input type="text" name="username"><br><br>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" required>
         </div>
-        <div class="div">
-            <label for="email">Email:</label><br>
-            <input type="email" name="email"><br><br>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" title="Please enter a valid Gmail address ending with @gmail.com" required>
+            <div class="invalid-feedback">
+                Please enter a valid Gmail address ending with @gmail.com.
+            </div>
         </div>
-        <div class="div">
-            <label for="password">Password:</label><br>
-            <input type="password" name="password"><br><br>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <div class="div">
-            <label for="cpassword">Confirm Password:</label>
-            <input type="password" name="cpassword"><br><br>
+        <div class="mb-3">
+            <label for="cpassword" class="form-label">Confirm Password:</label>
+            <input type="password" class="form-control" id="cpassword" name="cpassword" required>
         </div>
-        <button type="submit" name="submit">Sign up</button>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
 </div>
-</body>
-</html>
+<script>
+    document.getElementById('emailForm').addEventListener('submit', function(event) {
+        var emailInput = document.getElementById('email');
+        if (!emailInput.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        emailInput.classList.add('was-validated');
+    }, false);
+</script>
+{% endblock %}

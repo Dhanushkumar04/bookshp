@@ -1,75 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookshop automation</title>
-    <style>
-        .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+{% extends 'base.html' %}
 
-form {
-    width: 300px; 
-    border: 3px solid red;
-    padding: 100px;
-    background-color: powderblue;
-}
-
-.div {
-    margin-bottom: 15px;
-    padding-left: 50px;
-}
-
-label {
-    width: 120px;
-    text-align: right;
-    margin-right: 15px;
-}
-
-input[type="email"],
-input[type="password"] {
-    width: 180px; 
-}
-
-.container form button {
-    margin-left: 100px; 
-    border-radius: 5px;
-}
-button:hover{
-    background-color: blue;
-    color: white;
-}
-button:visited{
-    background-color: red;
-}
-.logindiv {
-    color: red;
-}
-    </style>
-</head>
-<body>
-    <div class="container">
+{% block content %}
+<div class="container">
     <form method="post">
         {% csrf_token %}
-        <div class="div">
-            <label for="username">Username:</label><br>
-            <input type="text" name="username"><br><br>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="username" name="username">
         </div>
-        <div class="div">
-            <label for="password">Password:</label><br>
-            <input type="password" name="password"><br><br>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password">
         </div>
-        <button type="submit" name="submit">Login</button>
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
     <div class="logindiv">
         {% for message in messages %}
-        <p>{{message}}</p>
+        <p>{{ message }}</p>
         {% endfor %}
     </div>
 </div>
-</body>
-</html>
+{% endblock %}
+        

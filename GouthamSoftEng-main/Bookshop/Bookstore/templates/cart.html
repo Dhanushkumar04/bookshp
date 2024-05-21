@@ -1,67 +1,40 @@
-<!-- cart/cart.html -->
+{% extends 'base.html' %}
 
-<html lang="en">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<style>
-		.product-list {
-			display: flex;
-			flex-wrap: wrap; /* Allow items to wrap to the next row if necessary */
-			justify-content: space-between; /* Space items evenly along the main axis */
-			list-style: none; /* Remove list styles */
-			padding: 0;
-		}
-
-		.product-item {
-			
-			flex: 1; /* Grow to fill available space evenly */
-			/* Limit item width to avoid overcrowding */
-			margin: 10px; /* Add spacing between items */
-			border: 1px solid #ccc; /* Add a border for visual separation */
-			padding: 10px;
-			text-align: center;
-		}
-
-		.buy-now-button {
-			display: block;
-			margin-top: 10px;
-			background-color: #007bff;
-			color: #fff;
-			text-decoration: none;
-			padding: 5px 10px;
-			border-radius: 5px;
-		}
-	</style>
-</head>
-
-<body>
-
-	<h1>Your Shopping Cart</h1>
-
-	<div class="product-list">
-
-	
-	Product count - {{count}}	
-	<a href="{% url 'home' %}">Back</a>
-	{% for item in cart_items %}
-	<div class="product-item">
-		<p>{{ item.product.name }} ({{ item.quantity }})</p>
-		<p>Price: ${{ item.product.price }}</p>
-		<a href="{% url 'remove_from_cart' item.id %}">Remove</a>
-	</div>
-	{% empty %}
-	<p>Your cart is empty.</p>
-	{% endfor %}
-
-	</div>
-
-	<p>Total Price: ${{ total_price }}</p>
-
-	{% comment %} <a href="{% url 'product_list' %}">Continue Shopping</a> {% endcomment %}
-
-</body>
-
-</html>
+{% block content %}
+<div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+            <section class="h-custom" style="background-color: #eee;">
+                <div class="container py-5">
+                    <div class="card shopping-cart" style="border-radius: 15px;">
+                        <div class="card-body text-black">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6">
+                                    <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Your products</h3>
+                                    {% for item in cart_items %}
+                                    <div class="d-flex align-items-center mb-5">
+                                        <div class="flex-shrink-0">
+                                            <img src="{{ item.product.image.url }}" class="img-fluid" style="width: 150px;" alt="Generic placeholder image">
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <a href="#!" class="float-end text-black"><i class="fas fa-times"></i></a>
+                                            <h5 class="text-primary">{{ item.product.name }} ({{ item.quantity }})</h5>
+                                            <h6 style="color: #9e9e9e;"><a href="{% url 'remove_from_cart' item.id %}">Remove</a></h6>
+                                            <div class="d-flex align-items-center">
+                                                <p class="fw-bold mb-0 me-5 pe-3">Price: Rs.{{ item.product.price }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    <!-- End of product cards -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

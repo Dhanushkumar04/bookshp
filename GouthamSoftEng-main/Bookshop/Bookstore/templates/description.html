@@ -1,10 +1,42 @@
-<html>
+{% extends 'base.html' %}
 
-<body>
-    
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mt-5">
+                <div class="card-body text-center">
+                    <h1 class="card-title">{{ product.name }}</h1>
+                    <img src="{{ product.image.url }}" class="img-fluid mb-4" alt="{{ product.name }}" style="max-height: 300px;">
+                    <p class="card-text"><strong>Author:</strong> {{ product.author }}</p>
+                    <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
+                    <p class="card-text"><strong>Price:</strong> Rs.{{ product.price }}</p>
+                    <p class="card-text"><strong>Quantity Available:</strong> {{ product.quantity }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-</body>
-
-
-
-</html>
+<style>
+    .container {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card-body {
+        padding: 40px;
+    }
+    .card-title {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+    .card-text {
+        font-size: 1.2em;
+    }
+</style>
+{% endblock %}
